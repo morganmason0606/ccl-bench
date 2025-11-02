@@ -1,0 +1,56 @@
+# workload_template.yaml
+version: 1
+
+description: >
+  Online serving of DeepSeek-V2-Lite on 2 A100 GPUs with EP=2.
+  pplx kernel is used as AlltoAll backend.
+  Script: https://github.com/vllm-project/vllm/blob/main/examples/online_serving/elastic_ep/serve_deepseek_v2.sh
+
+trace_url: https://drive.google.com/drive/u/0/folders/1-Hd-mcvPrcUjHTKOM2iMu5m-RsRefeBH
+
+workload_definition:
+  phase: inference
+  moe: true
+  granularity: TBD
+  model_family: deepseek_v2
+  local_batch_size: 2
+  seq_len: TBD
+  dataset: random
+  floating_point_precision: bf16
+
+framework: vllm
+
+communication_library:
+  name: 
+  tunable_env_vars:
+    - NCCL_IB_QPS_PER_CONNECTION
+    - NCCL_NET_GDR_LEVEL
+    - NCCL_SOCKET_IFNAME
+
+protocol_selection:
+  - TBD
+
+compiler_tool_selection: 
+network_topology_bandwidth_latency:
+  topology: TBD
+  bandwidth_gbps:
+    - 200
+    - 2000
+  latency_unit: us
+
+xpu_specification:
+  type: gpu
+  model: nvidia_a100
+  total_count: 2
+  count_per_node: 2
+  
+model_plan_parallelization:
+  dp_replicate: 1
+  dp_shard: 2
+  tp: 1
+  pp: 1
+  cp: 1
+
+tracing:
+  traces:
+    - torch_et
