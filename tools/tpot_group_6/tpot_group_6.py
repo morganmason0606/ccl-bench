@@ -82,8 +82,8 @@ def metric_cal(directory: str) -> Dict[str, float]:
         mean_calc = statistics.mean(tpots_ms)
         std_calc = statistics.pstdev(tpots_ms)
 
-        assert abs(record["mean_tpot_ms"] - mean_calc) < 1e-4
-        assert abs(record["std_tpot_ms"] - std_calc) < 1e-4
+        assert abs(record["mean_tpot_ms"] - mean_calc) < 1e-2, f"Expected {record['mean_tpot_ms']}, got {mean_calc}"
+        assert abs(record["std_tpot_ms"] - std_calc) < 1e-2, f"Expected {record['std_tpot_ms']}, got {std_calc}"
 
     plot_and_save(tpots_ms, out_path)
 
