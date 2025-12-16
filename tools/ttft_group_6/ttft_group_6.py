@@ -1,8 +1,8 @@
 import json
 import sys
-import matplotlib.pyplot as plt
 from pathlib import Path
-from textwrap import dedent
+from typing import Dict
+import matplotlib.pyplot as plt
 
 
 def plot_and_save(ttfts, outfile):
@@ -25,10 +25,10 @@ def plot_and_save(ttfts, outfile):
 
     plt.tight_layout()
     plt.savefig(outfile, dpi=150)
-    print(f"Saved: {outfile}")
+    # print(f"Saved: {outfile}")
 
 
-def metric_cal(directory: str) -> str:
+def metric_cal(directory: str) -> Dict[str, float]:
     """
     Extract TTFTs from a sglang benchmark JSONL file and plot them.
 
@@ -36,7 +36,7 @@ def metric_cal(directory: str) -> str:
         directory (str): The directory path containing the sglang benchmark JSONL file.
 
     Returns:
-        str: A pretty-printed string with the statistics of TTFTs.
+        Dict[str, float]: A dictionary containing the mean, median, standard deviation, and P99 TTFT values.
     """
     json_path = Path(directory) / "bench_results.jsonl"
     out_path = Path(directory) / "ttft.png"
@@ -65,12 +65,11 @@ def metric_cal(directory: str) -> str:
     ttfts_ms = [t * 1000.0 for t in record["ttfts"]]
     plot_and_save(ttfts_ms, out_path)
 
-    ret = dedent(f"""
-    ---------------Time to First Token----------------
-    Mean TTFT (ms):                          {record['mean_ttft_ms']:.2f}
-    Median TTFT (ms):                        {record['median_ttft_ms']:.2f}
-    Std TTFT (ms):                           {record['std_ttft_ms']:.2f}
-    P99 TTFT (ms):                           {record['p99_ttft_ms']:.2f}
-    """)
+    ret = {
+        "mean_ttft_ms": record["mean_ttft_ms"],
+        "median_ttft_ms": record["median_ttft_ms"],
+        "std_ttft_ms": record["std_ttft_ms"],
+        "p99_ttft_ms": record["p99_ttft_ms"],
+    }
 
     return ret

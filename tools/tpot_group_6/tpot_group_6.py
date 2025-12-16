@@ -1,9 +1,9 @@
 import json
 import sys
 import statistics
-import matplotlib.pyplot as plt
 from pathlib import Path
-from textwrap import dedent
+from typing import Dict
+import matplotlib.pyplot as plt
 
 def compute_tpots_ms(record):
     """Compute per-request TPOTs (ms) from sglang 'itls'."""
@@ -37,10 +37,10 @@ def plot_and_save(tpots, outfile):
 
     plt.tight_layout()
     plt.savefig(outfile, dpi=150)
-    print(f"Saved: {outfile}")
+    # print(f"Saved: {outfile}")
 
 
-def metric_cal(directory: str) -> str:
+def metric_cal(directory: str) -> Dict[str, float]:
     """
     Extract TPOTs from a sglang benchmark JSONL file and plot them.
 
@@ -48,7 +48,7 @@ def metric_cal(directory: str) -> str:
         directory (str): The directory path containing the sglang benchmark JSONL file.
 
     Returns:
-        str: A pretty-printed string with the statistics of TTFTs and TPOTs.
+        Dict[str, float]: A dictionary containing the mean, median, standard deviation, and P99 TPOT values.
     """
     json_path = Path(directory) / "bench_results.jsonl"
     out_path = Path(directory) / "tpot.png"
@@ -87,12 +87,11 @@ def metric_cal(directory: str) -> str:
 
     plot_and_save(tpots_ms, out_path)
 
-    ret = dedent(f"""
-    -----Time per Output Token (excl. 1st token)------
-    Mean TPOT (ms):                          {record['mean_tpot_ms']:.2f}
-    Median TPOT (ms):                        {record['median_tpot_ms']:.2f}
-    Std TPOT (ms):                           {record['std_tpot_ms']:.2f}
-    P99 TPOT (ms):                           {record['p99_tpot_ms']:.2f}
-    """)
+    ret = {
+        "mean_tpot_ms": record["mean_tpot_ms"],
+        "median_tpot_ms": record["median_tpot_ms"],
+        "std_tpot_ms": record["std_tpot_ms"],
+        "p99_tpot_ms": record["p99_tpot_ms"],
+    }
 
     return ret
