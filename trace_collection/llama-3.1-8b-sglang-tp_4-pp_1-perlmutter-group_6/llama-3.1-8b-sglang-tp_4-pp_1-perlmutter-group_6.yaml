@@ -4,7 +4,7 @@ version: 1
 description: >
   Online serving of Llama-3.1-8B on 4 A100 GPUs with TP=4, PP=1.
 
-hf_url: https://huggingface.co/Qwen/Qwen3-32B
+hf_url: https://huggingface.co/meta-llama/Llama-3.1-8B
 trace_url:
 
 workload:
