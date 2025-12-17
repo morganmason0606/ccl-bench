@@ -1,7 +1,7 @@
 # NOTE: this toml config is a preset for 64 A100 GPUs.
 
 [job]
-dump_folder = "./outputs"
+dump_folder = "/pscratch/sd/j/jg2587/ccl-bench-traces/llama-traces/llama-fsdp-4gpu-2batch-2048"
 description = "Llama 3 8B training"
 
 [profiling]
