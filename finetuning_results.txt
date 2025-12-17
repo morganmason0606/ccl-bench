@@ -38,6 +38,11 @@ Tensor Parallelism on Llama 3.1 8B with Torchtitan on Perlmutter on 1 node with 
         Straggler Delay:  0.03987708183012887
         Straggler Slowdown:  1.0415333089914574
 
+- local_batch_size = 4
+    seq_len = 1024:
+        Straggler Delay:  0.015796089666565122
+        Straggler Slowdown:  1.0160496107571992
+
 ********************************************************************
 
 Pipeline Parallelism on Llama 3.1 8B with Torchtitan on Perlmutter on 1 node with 4 GPUS
@@ -45,10 +50,37 @@ Pipeline Parallelism on Llama 3.1 8B with Torchtitan on Perlmutter on 1 node wit
 
 - local_batch_size = 4 # has to be greater than or equal to pipeline_parallel_degree
     seq_len = 512:
-    Straggler Delay:  0.1439889409951021
-    Straggler Slowdown:  1.168209206505448
+        Straggler Delay:  0.1439889409951021
+        Straggler Slowdown:  1.168209206505448
+    # not enough memory for higher sequence lengths
+
 
 ********************************************************************
+
+FSDP & TP on Llama 3.1 8B with Torchtitan on Perlmutter on 1 node with 4 GPUS
+- local_batch_size = 2
+- seq_len = 1024
+
+    Straggler Delay:  0.10903784368806896
+    Straggler Slowdown:  1.1223821269125758
+
+********************************************************************
+
+TP & PP:
+- local_batch_size = 4
+- seq_len = 512
+    Straggler Delay:  0.22174988362164813
+    Straggler Slowdown:  1.28493395497784
+
+FSDP + PP
+# broken in torchtitan no matter what configs are used
+
+FSDP + TP + PP
+- need 8 GPUs for all three parallelisms (not scale up domain anymore)
+
+********************************************************************
+
+
 
 ---------
 * QWEN: *
@@ -71,7 +103,7 @@ local_batch_size = 2:
 
 ********************************************************************
 
-TP on Qwen 3 8B with Torchtitan on Perlmutter on 1 node with 4 GPUS
+Tensor Parallelism on Qwen 3 8B with Torchtitan on Perlmutter on 1 node with 4 GPUS
 - tensor_parallel_degree = 4
 - seq_len = 1024
 
@@ -86,6 +118,14 @@ local_batch_size = 2:
 local_batch_size = 4:
     Straggler Delay:  0.030754125504352005
     Straggler Slowdown:  1.031729952444064
+
+********************************************************************
+
+FSDP & TP:
+- local_batch_size = 2
+- seq_len = 1024
+    Straggler Delay:  0.3034388732650684
+    Straggler Slowdown:  1.435624185184452
 
 ********************************************************************
 
