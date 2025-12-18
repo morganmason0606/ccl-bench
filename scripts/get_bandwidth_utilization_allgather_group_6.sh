@@ -12,5 +12,5 @@ traces=(
 )
 
 for trace in "${traces[@]}"; do
-  python ./tools/main.py --trace "$trace" --metric "bandwidth_utilization_group_6"
+  python ./tools/main.py --trace "$trace" --metric "bandwidth_utilization_allgather_group_6"
 done
