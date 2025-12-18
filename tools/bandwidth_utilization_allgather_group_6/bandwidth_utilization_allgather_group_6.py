@@ -9,7 +9,6 @@ import yaml
 from pathlib import Path
 import sqlite3
 import pandas as pd
-import argparse
 
 def _get_nvtx_events(conn, pattern="%logits_processor%"): 
     nvtx_query = f"""
@@ -98,7 +97,7 @@ def metric_cal(directory: str) -> float:
         directory (str): The directory path containing the exported sqlite file from nsys.
 
     Returns:
-        Dict[str, float]: The statistics of bandwidth utilization for allgather.
+        Dict[str, float] | "n/a": The statistics of bandwidth utilization for allgather, or "n/a" if the metric is not applicable.
     """
     dir_name = Path(directory).name
     db_path = str(Path(directory) / "nsys_0.sqlite")
