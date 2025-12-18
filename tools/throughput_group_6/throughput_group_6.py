@@ -32,7 +32,7 @@ def metric_cal(directory: str) -> Dict[str, float]:
         directory (str): The directory path containing the sglang benchmark JSONL file.
 
     Returns:
-        Dict[str, float]: A dictionary containing duration, completed, requests/s, and tokens/s metrics.
+        float: The total tokens processed per second.
     """
     json_path = Path(directory) / "bench_results.jsonl"
     if not json_path.exists():
@@ -41,7 +41,6 @@ def metric_cal(directory: str) -> Dict[str, float]:
     record = _load_single_record(json_path)
 
     duration_s = float(record["duration"])          # seconds
-    completed = int(record["completed"])            # requests
 
     total_input_tokens = int(record.get("total_input_tokens", 0))
     total_output_tokens = int(record.get("total_output_tokens", 0))
@@ -51,15 +50,6 @@ def metric_cal(directory: str) -> Dict[str, float]:
         raise ValueError(f"Invalid duration (<=0) in {json_path}: {duration_s}")
 
     # Throughput
-    requests_per_sec = completed / duration_s
-    input_tokens_per_sec = total_input_tokens / duration_s
-    output_tokens_per_sec = total_output_tokens / duration_s
     total_tokens_per_sec = total_tokens / duration_s
 
-
-    json_request_throughput = record.get("request_throughput")
-    json_total_throughput = record.get("total_throughput")
-
-    return {
-        "total_tokens_per_sec": total_tokens_per_sec
-    }
+    return total_tokens_per_sec
