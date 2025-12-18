@@ -25,7 +25,7 @@ def _load_single_record(json_path: Path) -> dict:
     return record
 
 
-def metric_cal(directory: str) -> Dict[str, float]:
+def metric_cal(directory: str) -> float:
     """Extract throughput metrics from an SGLang benchmark JSONL file.
 
     Args:
