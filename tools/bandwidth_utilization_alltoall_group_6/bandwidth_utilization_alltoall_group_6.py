@@ -1,5 +1,6 @@
 import yaml
 from pathlib import Path
+import pandas as pd
 import duckdb
 
 def _get_kernels(con, start_time, end_time, pattern):
@@ -127,16 +128,25 @@ def metric_cal(directory: str) -> float:
         "min_gt_one",
     ]
 
-    stats = {
-        metric: {
-            col: float(
-                results_df.loc[
-                    results_df["metricName"] == metric, col
-                ].iloc[0]
-            )
+    def to_float(value, default=0.0):
+        if pd.isna(value):
+            return default
+        return float(value)
+
+    stats = {}
+
+    for metric in metrics_of_interest:
+        row = results_df.loc[results_df["metricName"] == metric]
+
+        # skip if metric is missing entirely
+        if row.empty:
+            continue
+
+        row = row.iloc[0]
+
+        stats[metric] = {
+            col: to_float(row[col])
             for col in columns_to_extract
         }
-        for metric in metrics_of_interest
-    }
 
     return stats
