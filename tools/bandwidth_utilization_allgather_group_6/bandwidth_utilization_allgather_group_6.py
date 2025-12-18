@@ -111,6 +111,9 @@ def metric_cal(directory: str) -> float:
         tp = workload_card["Model-executor"]["model_plan_parallelization"]["tp"]
         pp = workload_card["Model-executor"]["model_plan_parallelization"]["pp"]
 
+    if model_family not in ["deepseek-v2-lite", "llama-3.1-8B", "qwen-32b"]:
+        return "n/a"
+
     # vocab sizes are found from model's config.json
     if model_family == "deepseek-v2-lite":
         vocab_size=102400*2

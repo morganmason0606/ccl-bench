@@ -98,11 +98,26 @@ def _get_bandwidth_utilization(combined_df, NGPUS=4, bandwidth=600):
     combined_df['bandwidth utilization'] = combined_df['effective bandwidth(GB/s)']/bandwidth
     return combined_df
 
+def _get_bandwidth_utilization_df(db_path):
+    conn = sqlite3.connect(db_path)
+    df_list=[]
+    for i in range(4): 
+        memcpy_df = _get_dtod_memcpy_for_device(conn, i)
+        reduce_kernels = _get_reduce_kernels_for_device(conn, i)
+        df = _find_reduce_pattern(memcpy_df, reduce_kernels)
+        df_list.append(df.copy())
+    combined_df = pd.concat(df_list, axis=0, ignore_index=True)
+    bandwidth_utilization = _get_bandwidth_utilization(combined_df)
+    return bandwidth_utilization
+
+
 def metric_cal(directory: str) -> float:
     """
     Calculate the bandwidth utilization for allreduce from the exported sqlite file from nsys.
 
     n/a for llama tp=1
+
+    For qwen-32b with pp=2, the metric is calculated by combining data from node 0 and node 1.
 
     Args:
         directory (str): The directory path containing the exported sqlite file from nsys.
@@ -120,20 +135,17 @@ def metric_cal(directory: str) -> float:
         workload_card = yaml.safe_load(f)
         model_family = workload_card["workload"]["model"]["model_family"]
         tp = workload_card["Model-executor"]["model_plan_parallelization"]["tp"]
+        pp = workload_card["Model-executor"]["model_plan_parallelization"]["pp"]
+
+
+    if model_family not in ["deepseek-v2-lite", "llama-3.1-8B", "qwen-32b"]:
+        return "n/a"
 
     if model_family == "llama-3.1-8B" and tp == 1:
         return "n/a"
 
     try: 
-        conn = sqlite3.connect(db_path)
-        df_list=[]
-        for i in range(4): 
-            memcpy_df = _get_dtod_memcpy_for_device(conn, i)
-            reduce_kernels = _get_reduce_kernels_for_device(conn, i)
-            df = _find_reduce_pattern(memcpy_df, reduce_kernels)
-            df_list.append(df.copy())
-        combined_df = pd.concat(df_list, axis=0, ignore_index=True)
-        bandwidth_utilization = _get_bandwidth_utilization(combined_df)
+        bandwidth_utilization = _get_bandwidth_utilization_df(db_path)
         bandwidth_utilization.to_csv(output_csv_path)
         # print(f'saved to {output_csv_path}')
         # print(bandwidth_utilization.describe())
@@ -142,6 +154,15 @@ def metric_cal(directory: str) -> float:
         return "n/a"
 
     col = bandwidth_utilization["bandwidth utilization"]
+
+    if model_family == "qwen-32b" and pp == 2:
+        db_path_1 = str(Path(directory) / "nsys_1.sqlite")
+        try:
+            bandwidth_utilization_1 = _get_bandwidth_utilization_df(db_path_1)
+            col = pd.concat([col, bandwidth_utilization_1["bandwidth utilization"]], axis=0, ignore_index=True)
+        except Exception as e:
+            print('error in querying', e)
+            return "n/a"
 
     stats = {
         "mean": float(col.mean()),
