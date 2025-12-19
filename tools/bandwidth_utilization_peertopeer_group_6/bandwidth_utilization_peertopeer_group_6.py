@@ -152,7 +152,7 @@ def metric_cal(directory: str) -> float:
         directory (str): The directory path containing the exported sqlite file from nsys.
 
     Returns:
-        float: The average value of NVLink TX Responses User Data [Throughput %], or float("nan") if the metric is not applicable. If there are multiple nodes, only return the value of node 0.
+        float: The average of non-zero value of NVLink TX Responses User Data [Throughput %], or float("nan") if the metric is not applicable. If there are multiple nodes, only return the value of node 0.
     """
     dir_name = Path(directory).name
     db_path = str(Path(directory) / "nsys_0.sqlite")
@@ -181,6 +181,6 @@ def metric_cal(directory: str) -> float:
 
     row = row.iloc[0]
 
-    ret = float(row["avg_val"])
+    ret = float(row["avg_no_zero"])
 
     return ret
