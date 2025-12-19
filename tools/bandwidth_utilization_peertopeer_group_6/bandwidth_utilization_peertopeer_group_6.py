@@ -148,11 +148,13 @@ def metric_cal(directory: str) -> float:
 
     only applicable pp > 1.
 
+    For qwen model, the value is extracted from PCIe TX Throughput [Throughput %].
+    
     Args:
         directory (str): The directory path containing the exported sqlite file from nsys.
 
     Returns:
-        float: The average of non-zero value of NVLink TX Responses User Data [Throughput %], or float("nan") if the metric is not applicable. If there are multiple nodes, only return the value of node 0.
+        float: The average of non-zero value of NVLink TX Responses User Data [Throughput %] or PCIe TX Throughput [Throughput %] for qwen model, or float("nan") if the metric is not applicable. If there are multiple nodes, only return the value of node 0.
     """
     dir_name = Path(directory).name
     db_path = str(Path(directory) / "nsys_0.sqlite")
@@ -175,6 +177,9 @@ def metric_cal(directory: str) -> float:
     results_df.to_csv(output_csv_path)
 
     row = results_df.loc[results_df["metricName"] == "NVLink TX Responses User Data [Throughput %]"]
+
+    if model_family == "qwen-32b":
+        row = results_df.loc[results_df["metricName"] == "PCIe TX Throughput [Throughput %]"]
 
     if row.empty:
         return float("nan")
