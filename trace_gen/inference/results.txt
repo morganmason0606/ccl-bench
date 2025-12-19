@@ -1,0 +1,23 @@
+=== Llama 3.1 TP 2 ===
+Straggler Delay:  0.3276959511385086
+Straggler Slowdown:  1.4874222484505977
+
+=== Llama 3.1 TP 4 ===
+Straggler Delay:  0.38207561669015205
+Straggler Slowdown:  1.6183209904156939
+
+=== Llama 3.1 DP 2 ===
+Straggler Delay:  0.009648523226425634
+Straggler Slowdown:  1.0097425241974285
+
+=== Llama 3.1 DP 4 ===
+Straggler Delay:  0.037696261182794746
+Straggler Slowdown:  1.039172934347245
+
+=== Llama 3.1 PP 2 ===
+Straggler Delay:  0.14834086122732315
+Straggler Slowdown:  1.174178676038276
+
+=== Llama 3.1 PP 4 ===
+Straggler Delay:  0.17414839618648464
+Straggler Slowdown:  1.2108712938042667
