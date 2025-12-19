@@ -21,3 +21,49 @@ Straggler Slowdown:  1.174178676038276
 === Llama 3.1 PP 4 ===
 Straggler Delay:  0.17414839618648464
 Straggler Slowdown:  1.2108712938042667
+
+=== Qwen3 TP 2 ===
+Straggler Delay:  0.21905318081917752
+Straggler Slowdown:  1.2804969242962718
+
+=== Qwen3 TP 4 ===
+Straggler Delay:  0.34507857459698826
+Straggler Slowdown:  1.52690072612091
+
+=== Qwen3 DP 2 ===
+Straggler Delay:  0.024237584084422226
+Straggler Slowdown:  1.0248396368717272
+
+=== Qwen3 DP 4 ===
+Straggler Delay:  0.01409810061411274
+Straggler Slowdown:  1.01429969921236
+
+=== Qwen3 PP 2 ===
+Straggler Delay:  0.1089699014153178
+Straggler Slowdown:  1.122296543728889
+
+=== Qwen3 PP 4 ===
+Straggler Delay:  0.17274949373252596
+Straggler Slowdown:  1.2088236784670774
+
+=== Mistral TP 2 ===
+Straggler Delay:  0.18555147983621195
+Straggler Slowdown:  1.22782468780089
+
+=== Mistral TP 4 ===
+Straggler Delay:  0.24527917109509856
+Straggler Slowdown:  1.3249932447882724
+
+=== Mistral DP 2 ===
+Straggler Delay:  0.036920716701115956
+Straggler Slowdown:  1.0383361134865756
+
+=== Mistral DP 4 ===
+Straggler Delay:  0.06651738400740223
+Straggler Slowdown:  1.071257228434482
+
+=== Mistral PP 2 ===
+Straggler Delay:  0.03462967647464777
+Straggler Slowdown:  1.0358719090806383
+
+=== Mistral PP 4 ===

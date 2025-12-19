@@ -5,7 +5,7 @@ from typing import Dict, List, Tuple
 
 
 def _iter_trace_files(directory: str) -> List[str]:
-    files = sorted(glob.glob(os.path.join(directory, "rank*_trace.json")))
+    files = sorted(glob.glob(os.path.join(directory, "*.json")))
     return files
 
 
@@ -27,11 +27,6 @@ def collect_kernel_durations(directory: str) -> Tuple[List[str], Dict[str, List[
 
         for event in trace_data.get("traceEvents", []):
             if event.get("cat", "").lower() != "kernel":
-                continue
-
-            name = event.get("name", "")
-            lowered_name = name.lower()
-            if not lowered_name or not lowered_name.startswith("nccldevkernel_"):
                 continue
 
             duration = event.get("dur")
