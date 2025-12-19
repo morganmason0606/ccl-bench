@@ -40,7 +40,7 @@ def metric_cal(directory: str) -> float:
     with open(workload_card_path, 'r') as f:
         workload_card = yaml.safe_load(f)
         model_family = workload_card["workload"]["model"]["model_family"]
-        ep = workload_card["Model-executor"]["model_plan_parallelization"]["ep"]
+        ep = workload_card["Model-executor"]["model_plan_parallelization"].get("ep")
 
     if model_family != "deepseek-v2-lite":
         return float("nan")
