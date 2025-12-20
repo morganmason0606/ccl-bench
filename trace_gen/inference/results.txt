@@ -67,3 +67,28 @@ Straggler Delay:  0.03462967647464777
 Straggler Slowdown:  1.0358719090806383
 
 === Mistral PP 4 ===
+vLLM failure (haven't diagnosed, not sure why this is happening)
+
+
+=========================
+=== MIXED PARALLELISM ===
+=========================
+
+=== Llama 3.1 DP2 + PP2 ===
+vLLM internal failure
+
+=== Llama 3.1 DP2 + TP2 ===
+Straggler Delay:  0.3365492604816237
+Straggler Slowdown:  1.5072709101597164
+
+=== Llama 3.1 TP2 + PP2 ===
+Straggler Delay:  0.333345385170453
+Straggler Slowdown:  1.5000271171237358
+
+=== Qwen3 DP2 + DP2 ===
+Straggler Delay:  0.34889190688498256
+Straggler Slowdown:  1.5358432963347473
+
+=== Qwen3 TP2 + PP2 ===
+Straggler Delay:  0.3864255849142828
+Straggler Slowdown:  1.6297941625553254

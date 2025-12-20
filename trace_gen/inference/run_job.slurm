@@ -12,7 +12,8 @@ echo "Running on: $(hostname)"
 echo "GPUs allocated: $CUDA_VISIBLE_DEVICES"
 
 # activate virtual environment
-source ~/.conda/envs/straggler_infer/bin/activate
+module load conda
+conda activate straggler_infer
 
 # run your script
 ~/ccl-bench-straggler-scale-up/trace_gen/inference/run_experiment_sweep.sh
