@@ -33,6 +33,12 @@ if __name__ == "__main__":
     elif metric_name == "tpot":
         from tpot.tpot import tpot
         metric_cal_func = tpot
+    elif metric_name == "mfu":
+        from compute_metrics_trace.mfu import mfu
+        metric_cal_func = mfu
+    elif metric_name == "estimated_bandwidth":
+        from compute_metrics_trace.estimated_bandwidth import estimated_bandwidth
+        metric_cal_func = estimated_bandwidth
     else:
         raise ValueError(f"Unsupported metric name: {metric_name}")
     
