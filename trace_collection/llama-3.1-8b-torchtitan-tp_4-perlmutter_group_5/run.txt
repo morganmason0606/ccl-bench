@@ -31,3 +31,7 @@ CONFIG_FILE="../../trace_collection/llama-3.1-8b-torchtitan-tp_4-perlmutter_grou
 # Traces with other batch sizes + sequence lenghts: 
 CONFIG_FILE="../../trace_collection/llama-3.1-8b-torchtitan-tp_4-perlmutter_group_5/llama-tp-4gpu-2batch-2048.toml" ./run_train.sh
 CONFIG_FILE="../../trace_collection/llama-3.1-8b-torchtitan-tp_4-perlmutter_group_5/llama-tp-4gpu-4batch-1024.toml" ./run_train.sh
+
+5. Once your trace has been generated, run the commands below to produce straggler delay/slowdown metrics:
+cd back to ccl-bench-straggler-scale-up
+python /tools/main.py --trace "<put-path-to-trace-folder-here>" --metric "straggler_metrics"

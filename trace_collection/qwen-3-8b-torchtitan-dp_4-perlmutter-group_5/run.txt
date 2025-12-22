@@ -30,3 +30,7 @@ CONFIG_FILE="../../trace_collection/qwen-3-8b-torchtitan-dp_4-perlmutter-group_5
 
 # Trace with other batch sizes + sequence length: 
 CONFIG_FILE="../../trace_collection/qwen-3-8b-torchtitan-dp_4-perlmutter-group_5/qwen-dp-4gpu-1batch.toml" ./run_train.sh
+
+5. Once your trace has been generated, run the commands below to produce straggler delay/slowdown metrics:
+cd back to ccl-bench-straggler-scale-up
+python /tools/main.py --trace "<put-path-to-trace-folder-here>" --metric "straggler_metrics"
